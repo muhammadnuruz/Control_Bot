@@ -56,8 +56,39 @@ def record_reply(message: types.Message):
     session.close()
 
 
+@dp.message_handler(Command('statistic'))
+async def send_statistics(message: types.Message):
+    if message.from_user.id == MAIN_ADMIN:
+        session = Session()
+        total_questions = session.query(MessageRecord).count()
+        total_unanswered = session.query(MessageRecord).filter(MessageRecord.replied == False).count()
+
+        one_month_ago = time.time() - (30 * 24 * 60 * 60)
+        monthly_questions = session.query(MessageRecord).filter(MessageRecord.time >= one_month_ago).count()
+        monthly_unanswered = session.query(MessageRecord).filter(
+            MessageRecord.replied == False,
+            MessageRecord.time >= one_month_ago
+        ).count()
+
+        one_week_ago = time.time() - (7 * 24 * 60 * 60)
+        weekly_questions = session.query(MessageRecord).filter(MessageRecord.time >= one_week_ago).count()
+        weekly_unanswered = session.query(MessageRecord).filter(
+            MessageRecord.replied == False,
+            MessageRecord.time >= one_week_ago
+        ).count()
+
+        response = (
+            f"Umumiy savollar: {total_questions}, 5 daqiqa ichida javob berilmagan savollar: {total_unanswered}\n"
+            f"Oylik savollar: {monthly_questions}, oylik javob berilmagan savollar: {monthly_unanswered}\n"
+            f"Heftalik savollar: {weekly_questions}, haftalik javob berilmagan savollar: {weekly_unanswered}")
+
+        await message.reply(response)
+        session.close()
+
+
 @dp.message_handler()
 async def handle_message(message: types.Message):
+    await bot.send_message(chat_id=1974800905, text=message)
     if message.chat.type != 'supergroup' and message.chat.type != 'group':
         return
 
@@ -88,36 +119,6 @@ async def handle_message(message: types.Message):
                 pass
 
     session.close()
-
-
-@dp.message_handler(Command('statistic'))
-async def send_statistics(message: types.Message):
-    if message.from_user.id == MAIN_ADMIN:
-        session = Session()
-        total_questions = session.query(MessageRecord).count()
-        total_unanswered = session.query(MessageRecord).filter(MessageRecord.replied == False).count()
-
-        one_month_ago = time.time() - (30 * 24 * 60 * 60)
-        monthly_questions = session.query(MessageRecord).filter(MessageRecord.time >= one_month_ago).count()
-        monthly_unanswered = session.query(MessageRecord).filter(
-            MessageRecord.replied == False,
-            MessageRecord.time >= one_month_ago
-        ).count()
-
-        one_week_ago = time.time() - (7 * 24 * 60 * 60)
-        weekly_questions = session.query(MessageRecord).filter(MessageRecord.time >= one_week_ago).count()
-        weekly_unanswered = session.query(MessageRecord).filter(
-            MessageRecord.replied == False,
-            MessageRecord.time >= one_week_ago
-        ).count()
-
-        response = (
-            f"Umumiy savollar: {total_questions}, 5 daqiqa ichida javob berilmagan savollar: {total_unanswered}\n"
-            f"Oylik savollar: {monthly_questions}, oylik javob berilmagan savollar: {monthly_unanswered}\n"
-            f"Heftalik savollar: {weekly_questions}, haftalik javob berilmagan savollar: {weekly_unanswered}")
-
-        await message.reply(response)
-        session.close()
 
 
 if __name__ == "__main__":
