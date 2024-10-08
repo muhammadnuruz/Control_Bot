@@ -104,7 +104,7 @@ async def handle_message(message: types.Message):
     record = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
 
     if record and not record.replied:
-        user_link = f"[{message.from_user.full_name}](tg://user?id={message.from_user.id})"
+        user_link = f"[{message.from_user.full_name}]( tg://user?id={message.from_user.id} )"
         group_link = f"[Guruh](https://t.me/c/{message.chat.id}/{message.message_id})"
         message_link = f"[Xabar](https://t.me/c/{message.chat.id}/{message.message_id})"
         for admin in MAIN_ADMIN:
