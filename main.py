@@ -58,7 +58,7 @@ def record_reply(message: types.Message):
 
 @dp.message_handler(Command('statistic'))
 async def send_statistics(message: types.Message):
-    if message.from_user.id == MAIN_ADMIN:
+    if message.from_user.id in MAIN_ADMIN:
         session = Session()
         total_questions = session.query(MessageRecord).count()
         total_unanswered = session.query(MessageRecord).filter(MessageRecord.replied == False).count()
@@ -78,9 +78,9 @@ async def send_statistics(message: types.Message):
         ).count()
 
         response = (
-            f"Umumiy savollar: {total_questions}, 5 daqiqa ichida javob berilmagan savollar: {total_unanswered}\n"
-            f"Oylik savollar: {monthly_questions}, oylik javob berilmagan savollar: {monthly_unanswered}\n"
-            f"Heftalik savollar: {weekly_questions}, haftalik javob berilmagan savollar: {weekly_unanswered}")
+            f"Umumiy savollar: {total_questions}\n 5 daqiqa ichida javob berilmagan savollar: {total_unanswered}\n\n"
+            f"Oylik savollar: {monthly_questions}\n oylik javob berilmagan savollar: {monthly_unanswered}\n\n"
+            f"Heftalik savollar: {weekly_questions}\n haftalik javob berilmagan savollar: {weekly_unanswered}")
 
         await message.reply(response)
         session.close()
@@ -88,7 +88,6 @@ async def send_statistics(message: types.Message):
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
-    await bot.send_message(chat_id=1974800905, text=message)
     if message.chat.type != 'supergroup' and message.chat.type != 'group':
         return
 
