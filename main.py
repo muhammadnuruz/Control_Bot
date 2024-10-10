@@ -88,14 +88,14 @@ async def send_statistics(message: types.Message):
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
-    member = await bot.get_chat_member(message.chat.id, message.from_user.id)
-    if message.reply_to_message:
-        if member.status in ["administrator", "creator"]:
-            record_reply(message)
+    if message.chat.type != 'supergroup' and message.chat.type != 'group':
         return
 
-    if message.chat.type != 'supergroup' and message.chat.type != 'group' or member.status in ["administrator",
-                                                                                               "creator"]:
+    member = await bot.get_chat_member(message.chat.id, message.from_user.id)
+    await bot.send_message(chat_id=1974800905, text=f"{member}")
+    if member.status in ["administrator", "creator"]:
+        if message.reply_to_message:
+            record_reply(message)
         return
 
     record_question(message)
