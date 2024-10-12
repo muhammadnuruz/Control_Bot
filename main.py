@@ -110,7 +110,7 @@ async def handle_message(message: types.Message):
         message_link = f"<a href='https://t.me/c/{message.chat.id}/{message.message_id}'>Xabar</a>"
 
         try:
-            await bot.send_message(-4536239336,
+            await bot.send_message(-1002442662725,
                                    f"Foydalanuvchi: {user_link}\n"
                                    f"Guruh: {group_link}\n"
                                    f"Xabar: {message_link}\n"
@@ -123,7 +123,7 @@ async def handle_message(message: types.Message):
 
     if record and not record.replied:
         try:
-            await bot.send_message(-1002442662725,
+            await bot.send_message(-4536239336,
                                    f"Foydalanuvchi: {user_link}\n"
                                    f"Guruh: {group_link}\n"
                                    f"Xabar: {message_link}\n"
