@@ -100,23 +100,37 @@ async def handle_message(message: types.Message):
 
     record_question(message)
 
-    await asyncio.sleep(300)
+    await asyncio.sleep(180)
     session = Session()
     record = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
 
     if record and not record.replied:
-        user_link = f"[{message.from_user.full_name}](tg://user?id={message.from_user.id} )"
-        group_link = f"[Guruh](https://t.me/c/{message.chat.id}/{message.message_id})"
-        message_link = f"[Xabar](https://t.me/c/{message.chat.id}/{message.message_id})"
-        for admin in MAIN_ADMIN:
-            try:
-                await bot.send_message(admin,
-                                       f"Foydalanuvchi: {user_link}\n"
-                                       f"Guruh: {group_link}\n"
-                                       f"Xabar: {message_link}\n"
-                                       f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.")
-            except Exception:
-                pass
+        user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
+        group_link = f"<a href='https://t.me/c/{message.chat.id}/{message.message_id}'>Guruh</a>"
+        message_link = f"<a href='https://t.me/c/{message.chat.id}/{message.message_id}'>Xabar</a>"
+
+        try:
+            await bot.send_message(-4536239336,
+                                   f"Foydalanuvchi: {user_link}\n"
+                                   f"Guruh: {group_link}\n"
+                                   f"Xabar: {message_link}\n"
+                                   f"Javob berilmagan: 3 daqiqa ichida javob berilmagan.",
+                                   parse_mode="HTML")
+        except Exception:
+            pass
+
+    await asyncio.sleep(120)
+
+    if record and not record.replied:
+        try:
+            await bot.send_message(-1002442662725,
+                                   f"Foydalanuvchi: {user_link}\n"
+                                   f"Guruh: {group_link}\n"
+                                   f"Xabar: {message_link}\n"
+                                   f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.",
+                                   parse_mode="HTML")
+        except Exception:
+            pass
 
     session.close()
 
