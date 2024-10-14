@@ -107,15 +107,15 @@ async def handle_message(message: types.Message):
     if record and not record.replied:
         user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
         group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
-        message_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/'>Xabar</a>"
+        message_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Xabar</a>"
 
         try:
             await bot.send_message(-1002442662725,
                                    f"Foydalanuvchi: {user_link}\n"
                                    f"Guruh: {group_link}\n"
                                    f"Xabar: {message_link}\n"
-                                   f"Javob berilmagan: 3 daqiqa ichida javob berilmagan.",
-                                   parse_mode="HTML")
+                                   f"Javob berilmagan: 3 daqiqa ichida javob berilmagan.\n\n"
+                                   f"Habar: {message.text}", parse_mode="HTML")
         except Exception:
             pass
 
@@ -127,7 +127,8 @@ async def handle_message(message: types.Message):
                                    f"Foydalanuvchi: {user_link}\n"
                                    f"Guruh: {group_link}\n"
                                    f"Xabar: {message_link}\n"
-                                   f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.",
+                                   f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.\n\n"
+                                   f"Habar: {message.text}",
                                    parse_mode="HTML")
         except Exception:
             pass
