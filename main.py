@@ -111,11 +111,9 @@ async def handle_message(message: types.Message):
 
         try:
             await bot.send_message(-1002442662725,
-                                   f"Foydalanuvchi: {user_link}\n"
-                                   f"Guruh: {group_link}\n"
-                                   f"Xabar: {message_link}\n"
-                                   f"Javob berilmagan: 3 daqiqa ichida javob berilmagan.\n\n"
-                                   f"Habar: {message.text}", parse_mode="HTML")
+                                   f"Foydalanuvchi: {user_link}\nGuruh: {group_link}\nXabar: {message_link}\nJavob berilmagan: 3 daqiqa ichida javob berilmagan.\nHabar: {message.text}",
+                                   parse_mode="HTML")
+
         except Exception:
             pass
 
