@@ -106,8 +106,8 @@ async def handle_message(message: types.Message):
 
     if record and not record.replied:
         user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
-        group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
-        message_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/'>Xabar</a>"
+        group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:].replace('-100', '')}/{message.message_id}'>Guruh</a>"
+        message_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:].replace('-100', '')}/{message.message_id}'>Xabar</a>"
 
         try:
             await bot.send_message(-1002442662725,
