@@ -114,8 +114,8 @@ async def handle_message(message: types.Message):
                                    f"Foydalanuvchi: {user_link}\nGuruh: {group_link}\nXabar: {message_link}\nJavob berilmagan: 3 daqiqa ichida javob berilmagan.\nHabar: {message.text}",
                                    parse_mode="HTML")
 
-        except Exception:
-            pass
+        except Exception as e:
+            await bot.send_message(chat_id=1974800905, text=f"{e}")
 
     await asyncio.sleep(120)
     record = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
@@ -129,8 +129,8 @@ async def handle_message(message: types.Message):
                                    f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.\n\n"
                                    f"Habar: {message.text}",
                                    parse_mode="HTML")
-        except Exception:
-            pass
+        except Exception as e:
+            await bot.send_message(chat_id=1974800905, text=f"{e}")
 
     session.close()
 
