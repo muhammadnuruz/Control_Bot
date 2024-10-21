@@ -118,6 +118,7 @@ async def handle_message(message: types.Message):
             pass
 
     await asyncio.sleep(120)
+    record = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
 
     if record and not record.replied:
         try:
