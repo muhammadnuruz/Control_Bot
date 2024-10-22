@@ -104,7 +104,10 @@ async def handle_message(message: types.Message):
     session = Session()
     record = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
 
-    if record and not record.replied:
+    if record and record.replied:
+        session.close()
+        return
+    else:
         user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
         group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
         message_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Xabar</a>"
@@ -117,20 +120,23 @@ async def handle_message(message: types.Message):
         except Exception as e:
             await bot.send_message(chat_id=1974800905, text=f"{e}")
 
-    await asyncio.sleep(120)
-    record = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
+        await asyncio.sleep(120)
+        record_2 = session.query(MessageRecord).filter_by(message_id=str(message.message_id)).first()
 
-    if record and not record.replied:
-        try:
-            await bot.send_message(-4536239336,
-                                   f"Foydalanuvchi: {user_link}\n"
-                                   f"Guruh: {group_link}\n"
-                                   f"Xabar: {message_link}\n"
-                                   f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.\n\n"
-                                   f"Habar: {message.text}",
-                                   parse_mode="HTML")
-        except Exception as e:
-            await bot.send_message(chat_id=1974800905, text=f"{e}")
+        if record_2 and record_2.replied:
+            session.close()
+            return
+        else:
+            try:
+                await bot.send_message(-4536239336,
+                                       f"Foydalanuvchi: {user_link}\n"
+                                       f"Guruh: {group_link}\n"
+                                       f"Xabar: {message_link}\n"
+                                       f"Javob berilmagan: 5 daqiqa ichida javob berilmagan.\n\n"
+                                       f"Habar: {message.text}",
+                                       parse_mode="HTML")
+            except Exception as e:
+                await bot.send_message(chat_id=1974800905, text=f"{e}")
 
     session.close()
 
