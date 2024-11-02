@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'ArzonLabaratoriya.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "arzon_lab_db",
+        'NAME': "control_db",
         'USER': "postgres",
         'PASSWORD': '1',
         'HOST': "localhost",
@@ -150,14 +150,3 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/admin/login/'
-
-MEDIA_URL = '/pdfs/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'pdfs')
-LOCALE_PATHS = [
-    BASE_DIR / 'locale',
-]
-
-
-USE_I18N = True
-USE_L10N = True
-LANGUAGE_CODE = 'uz'
