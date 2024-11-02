@@ -4,6 +4,7 @@ import requests
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
+from django.utils import timezone
 
 API_TOKEN = '7443024666:AAHUIGFnQ2FyQ_UUSGFTwmimKgV98_C8FYY'
 MAIN_ADMIN = [1974800905, 734626776]
@@ -36,20 +37,46 @@ def record_reply(message: types.Message):
 @dp.message_handler(Command('statistic'))
 async def send_statistics(message: types.Message):
     if message.from_user.id in MAIN_ADMIN:
-        response = requests.get(API_BASE_URL)
+        response = requests.get(f"{API_BASE_URL}/")
+
         if response.status_code == 200:
-            stats = response.json()
-            response_text = (
-                f"Umumiy savollar: {stats['total_questions']}\n"
-                f"Javob berilmagan savollar: {stats['total_unanswered']}\n\n"
-                f"Oylik savollar: {stats['monthly_questions']}\n"
-                f"Oylik javob berilmagan savollar: {stats['monthly_unanswered']}\n\n"
-                f"Heftalik savollar: {stats['weekly_questions']}\n"
-                f"Haftalik javob berilmagan savollar: {stats['weekly_unanswered']}"
-            )
-            await message.reply(response_text)
+            try:
+                data = response.json()
+
+                # 'results' ni olish
+                messages = data.get('results', [])
+
+                # Agar messages list bo'lsa davom eting
+                if isinstance(messages, list):
+                    total_questions = len(messages)
+                    total_unanswered = sum(1 for msg in messages if not msg['replied'])
+
+                    now = timezone.datetime.now()
+                    monthly_questions = sum(1 for msg in messages if msg['created_at'][:7] == now.strftime('%Y-%m'))
+                    monthly_unanswered = sum(
+                        1 for msg in messages if msg['created_at'][:7] == now.strftime('%Y-%m') and not msg['replied'])
+
+                    weekly_questions = sum(
+                        1 for msg in messages if msg['created_at'] >= (now - timezone.timedelta(days=7)).isoformat())
+                    weekly_unanswered = sum(1 for msg in messages if
+                                            msg['created_at'] >= (now - timezone.timedelta(days=7)).isoformat() and not
+                                            msg['replied'])
+
+                    response_text = (
+                        f"Umumiy savollar: {total_questions}\n"
+                        f"Javob berilmagan savollar: {total_unanswered}\n\n"
+                        f"Oylik savollar: {monthly_questions}\n"
+                        f"Oylik javob berilmagan savollar: {monthly_unanswered}\n\n"
+                        f"Heftalik savollar: {weekly_questions}\n"
+                        f"Haftalik javob berilmagan savollar: {weekly_unanswered}"
+                    )
+                    await message.reply(response_text)
+                else:
+                    await message.reply("Javob formati noto'g'ri, xabarlar ro'yxati kutilgan edi.")
+            except ValueError:
+                await message.reply("Xato: JSON formatida ma'lumot olishda muammo yuz berdi.")
         else:
-            await message.reply("Statistikani olishda xatolik yuz berdi.")
+            await message.reply("Xabarlarni olishda xatolik yuz berdi.")
 
 
 @dp.message_handler()
