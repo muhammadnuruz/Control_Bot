@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.analyses',
     'apps.telegram_users',
-    'apps.analysis_type',
 ]
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
