@@ -1,5 +1,7 @@
 import asyncio
 import time
+from email import message_from_string
+
 import requests
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Command
@@ -89,7 +91,9 @@ async def handle_message(message: types.Message):
         if message.reply_to_message:
             record_reply(message)
         return
-
+    last_message = requests.get(f"{API_BASE_URL}/user-last-message/{message.from_user.id}")
+    if last_message.status_code == 200:
+        return
     record_question(message)
 
     await asyncio.sleep(180)
