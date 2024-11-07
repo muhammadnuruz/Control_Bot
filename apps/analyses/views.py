@@ -87,4 +87,4 @@ class UserLastMessageAPIView(APIView):
             else:
                 return Response({"sent_within_last_minute": False}, status=404)
 
-        return Response({"sent_within_last_minute": None}, status=403)
+        return Response({"sent_within_last_minute": None}, status=404)

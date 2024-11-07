@@ -91,7 +91,7 @@ async def handle_message(message: types.Message):
         if message.reply_to_message:
             record_reply(message)
         return
-    last_message = requests.get(f"{API_BASE_URL}/user-last-message/{message.from_user.id}")
+    last_message = requests.get(f"{API_BASE_URL}/user-last-message/{message.from_user.id}/")
     if last_message.status_code == 200:
         return
     record_question(message)
