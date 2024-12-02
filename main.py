@@ -35,7 +35,9 @@ async def handle_message(message: types.Message):
                 record = response.json()
                 if record and record['user_id'] == str(message.from_user.id):
                     user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
-                    group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
+                    group_info = await bot.get_chat(message.chat.id)
+                    group_name = group_info.title
+                    group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>{group_name}</a>"
                     try:
                         await bot.send_message(
                             ADMINS_GROUP_ID,
@@ -55,7 +57,9 @@ async def handle_message(message: types.Message):
                 if record and record['user_id'] == str(message.from_user.id):
                     requests.delete(f"{API_BASE_URL}/{message.chat.id}/delete/")
                     user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
-                    group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
+                    group_info = await bot.get_chat(message.chat.id)
+                    group_name = group_info.title
+                    group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>{group_name}</a>"
                     try:
                         await bot.send_message(
                             MAIN_ADMINS_GROUP_ID,
