@@ -33,7 +33,7 @@ async def handle_message(message: types.Message):
             response = requests.get(f"{API_BASE_URL}/{message.chat.id}/")
             if response.status_code == 200:
                 record = response.json()
-                if record:
+                if record and record['user_id'] == str(message.from_user.id):
                     user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
                     group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
                     try:
@@ -52,7 +52,7 @@ async def handle_message(message: types.Message):
             response = requests.get(f"{API_BASE_URL}/{message.chat.id}/")
             if response.status_code == 200:
                 record = response.json()
-                if record:
+                if record and record['user_id'] == str(message.from_user.id):
                     requests.delete(f"{API_BASE_URL}/{message.chat.id}/delete/")
                     user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
                     group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
