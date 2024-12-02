@@ -21,7 +21,7 @@ async def handle_message(message: types.Message):
 
     admin = await bot.get_chat_member(message.chat.id, message.from_user.id)
     if admin.status in ["administrator", "creator"]:
-        requests.delete(f"{API_BASE_URL}/{chat_id}/delete/")
+        requests.delete(f"{API_BASE_URL}/{message.chat.id}/delete/")
     else:
         data = {
             "chat_id": message.chat.id,
