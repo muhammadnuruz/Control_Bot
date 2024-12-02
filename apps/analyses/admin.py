@@ -4,7 +4,7 @@ from apps.analyses.models import Messages
 
 
 class MessagesAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'chat_id', 'message_id', 'replied', 'created_at')
+    list_display = ('user_id', 'chat_id', 'created_at')
     ordering = ('created_at',)
 
 

@@ -3,9 +3,7 @@ from django.db import models
 
 class Messages(models.Model):
     user_id = models.CharField(max_length=100)
-    chat_id = models.CharField(max_length=100)
-    message_id = models.CharField(max_length=100)
-    replied = models.BooleanField(default=False)
+    chat_id = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
