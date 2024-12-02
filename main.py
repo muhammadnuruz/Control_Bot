@@ -53,6 +53,7 @@ async def handle_message(message: types.Message):
             if response.status_code == 200:
                 record = response.json()
                 if record:
+                    requests.delete(f"{API_BASE_URL}/{message.chat.id}/delete/")
                     user_link = f"<a href='tg://user?id={message.from_user.id}'>{message.from_user.full_name}</a>"
                     group_link = f"<a href='https://t.me/c/{str(message.chat.id)[4:]}/{message.message_id}'>Guruh</a>"
                     try:
