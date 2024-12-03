@@ -54,7 +54,6 @@ async def handle_message(message: types.Message, bot: Bot):
         data = {
             "chat_id": message.chat.id,
             "user_id": message.from_user.id,
-            "user_full_name": message.from_user.full_name,
         }
         async with aiohttp.ClientSession() as session:
             async with session.post(f"{API_BASE_URL}/create/", json=data) as response:
@@ -69,4 +68,3 @@ async def handle_message(message: types.Message, bot: Bot):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
-
