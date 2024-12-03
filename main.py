@@ -1,9 +1,11 @@
 import asyncio
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, types
 from aiogram.types import Message
 from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
 import requests
+import aiohttp
+import asyncio
 
 API_TOKEN = '7443024666:AAHUIGFnQ2FyQ_UUSGFTwmimKgV98_C8FYY'
 MAIN_ADMIN = [1974800905, 734626776]
