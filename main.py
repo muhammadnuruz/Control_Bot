@@ -14,13 +14,15 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 
-async def send_warning(bot: Bot, user_id: int, chat_id: int, message_id: int, delay: int, warning_type: str):
+async def send_warning(
+        bot: Bot, user_id: int, chat_id: int, message_id: int, delay: int, warning_type: str
+):
     await asyncio.sleep(delay)
     async with aiohttp.ClientSession() as session:
         async with session.get(f"{API_BASE_URL}/{chat_id}/") as response:
             if response.status == 200:
                 record = await response.json()
-                if record and record['user_id'] == str(user_id):
+                if record and record["user_id"] == str(user_id):
                     user_link = f"<a href='tg://user?id={user_id}'>{record.get('user_full_name', 'Foydalanuvchi')}</a>"
                     group_info = await bot.get_chat(chat_id)
                     group_name = group_info.title
@@ -34,7 +36,9 @@ async def send_warning(bot: Bot, user_id: int, chat_id: int, message_id: int, de
                     )
                     try:
                         await bot.send_message(
-                            ADMINS_GROUP_ID if warning_type == "3 daqiqa" else MAIN_ADMINS_GROUP_ID,
+                            ADMINS_GROUP_ID
+                            if warning_type == "3 daqiqa"
+                            else MAIN_ADMINS_GROUP_ID,
                             warning_text,
                             parse_mode="HTML",
                         )
@@ -42,8 +46,9 @@ async def send_warning(bot: Bot, user_id: int, chat_id: int, message_id: int, de
                         await bot.send_message(chat_id=MAIN_ADMIN[0], text=str(e))
 
 
-async def handle_message(message: types.Message, bot: Bot):
-    if message.chat.type not in ('supergroup', 'group'):
+@dp.message_handler()
+async def handle_message(message: Message):
+    if message.chat.type not in ("supergroup", "group"):
         return
 
     admin = await bot.get_chat_member(message.chat.id, message.from_user.id)
@@ -54,15 +59,20 @@ async def handle_message(message: types.Message, bot: Bot):
         data = {
             "chat_id": message.chat.id,
             "user_id": message.from_user.id,
+            "user_full_name": message.from_user.full_name,
         }
         async with aiohttp.ClientSession() as session:
             async with session.post(f"{API_BASE_URL}/create/", json=data) as response:
                 if response.status == 201:
                     asyncio.create_task(
-                        send_warning(bot, message.from_user.id, message.chat.id, message.message_id, 180, "3 daqiqa")
+                        send_warning(
+                            bot, message.from_user.id, message.chat.id, message.message_id, 180, "3 daqiqa"
+                        )
                     )
                     asyncio.create_task(
-                        send_warning(bot, message.from_user.id, message.chat.id, message.message_id, 300, "5 daqiqa")
+                        send_warning(
+                            bot, message.from_user.id, message.chat.id, message.message_id, 300, "5 daqiqa"
+                        )
                     )
 
 
