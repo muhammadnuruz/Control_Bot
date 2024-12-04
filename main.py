@@ -25,7 +25,7 @@ async def send_warning(
         async with session.get(f"{API_BASE_URL}/{chat_id}/") as response:
             if response.status == 200:
                 record = await response.json()
-                if record and record["user_id"] == str(user_id):
+                if record and record["user_id"] == str(user_id) and record['message_id'] == message_id:
                     user_link = f"<a href='tg://user?id={user_id}'>{record.get('user_full_name', 'Foydalanuvchi')}</a>"
                     group_info = await bot.get_chat(chat_id)
                     group_name = group_info.title
@@ -63,6 +63,7 @@ async def handle_message(message: Message):
             "chat_id": message.chat.id,
             "user_id": message.from_user.id,
             "user_full_name": message.from_user.full_name,
+            "message_id": message.message_id
         }
         async with aiohttp.ClientSession() as session:
             async with session.post(f"{API_BASE_URL}/create/", json=data) as response:
