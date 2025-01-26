@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'apps.users',
     'apps.analyses',
-    'apps.telegram_users',
+    'apps.bosses',
+    'apps.groups',
 ]
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -149,3 +150,11 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/admin/login/'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Control Bot",
+    "site_header": "Controller page",
+    "site_brand": "Control Bot",
+    "welcome_sign": "Welcome to admin page!",
+    "copyright": "© Control Bot",
+}

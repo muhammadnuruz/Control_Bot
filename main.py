@@ -3,13 +3,12 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.types import Message
 from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
-import requests
 import aiohttp
-import asyncio
 
 API_TOKEN = '7443024666:AAHUIGFnQ2FyQ_UUSGFTwmimKgV98_C8FYY'
 MAIN_ADMIN = [1974800905, 734626776]
 API_BASE_URL = "http://localhost:8000/api/messages/messages"
+GROUP_API_URL = "http://127.0.0.1:8000/api/groups/{chat_id}/"
 ADMINS_GROUP_ID = -1002442662725
 MAIN_ADMINS_GROUP_ID = -4536239336
 
@@ -30,7 +29,6 @@ async def send_warning(
                     group_info = await bot.get_chat(chat_id)
                     group_name = group_info.title
                     group_link = f"<a href='https://t.me/c/{str(chat_id)[4:]}/{message_id}'>{group_name}</a>"
-
                     warning_text = (
                         f"⚠️ *Ogohlantirish ({warning_type}):*\n"
                         f"Foydalanuvchi: {user_link}\n"
@@ -39,12 +37,25 @@ async def send_warning(
                     )
                     try:
                         await bot.send_message(
-                            ADMINS_GROUP_ID
-                            if warning_type == "3 daqiqa"
-                            else MAIN_ADMINS_GROUP_ID,
+                            ADMINS_GROUP_ID if warning_type == "3 daqiqa" else MAIN_ADMINS_GROUP_ID,
                             warning_text,
                             parse_mode="HTML",
                         )
+
+                        if warning_type == "5 daqiqa":
+                            async with session.get(GROUP_API_URL.format(chat_id=chat_id)) as group_response:
+                                if group_response.status == 200:
+                                    group_data = await group_response.json()
+                                    owners = group_data.get("owners", [])
+                                    for owner_chat_id in owners:
+                                        try:
+                                            await bot.send_message(
+                                                owner_chat_id, warning_text, parse_mode="HTML"
+                                            )
+                                        except Exception as e:
+                                            await bot.send_message(
+                                                MAIN_ADMIN[0], text=f"Xatolik: {str(e)}"
+                                            )
                     except Exception as e:
                         await bot.send_message(chat_id=MAIN_ADMIN[0], text=str(e))
 
