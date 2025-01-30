@@ -5,7 +5,7 @@ from apps.bosses.models import Bosses
 
 class Groups(models.Model):
     chat_id = models.CharField(max_length=100, unique=True)
-    company = models.ManyToManyField(Bosses, related_name="companies")
+    companies = models.ManyToManyField(Bosses, related_name="companies")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
