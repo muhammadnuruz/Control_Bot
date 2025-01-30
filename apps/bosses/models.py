@@ -8,8 +8,8 @@ class Bosses(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Boss"
-        verbose_name_plural = "Bosses"
+        verbose_name = "Compnay"
+        verbose_name_plural = "Companies"
 
     def __str__(self):
         return f"{self.name}"
