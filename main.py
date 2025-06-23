@@ -7,8 +7,8 @@ import aiohttp
 
 API_TOKEN = '7443024666:AAHUIGFnQ2FyQ_UUSGFTwmimKgV98_C8FYY'
 MAIN_ADMIN = [1974800905, 734626776]
-API_BASE_URL = "http://localhost:8000/api/messages/messages"
-GROUP_API_URL = "http://127.0.0.1:8000/api/groups/{chat_id}/"
+API_BASE_URL = "http://localhost:8003/api/messages/messages"
+GROUP_API_URL = "http://127.0.0.1:8003/api/groups/{chat_id}/"
 ADMINS_GROUP_ID = -1002442662725
 MAIN_ADMINS_GROUP_ID = -4536239336
 
