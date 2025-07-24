@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
 import aiohttp
 
-API_TOKEN = '7443024666:AAHUIGFnQ2FyQ_UUSGFTwmimKgV98_C8FYY'
+API_TOKEN = '7443024666:AAGDa_1rOPDu6DrpJb2DjM3SXsO1T6y1cfw'
 MAIN_ADMIN = [1974800905, 734626776]
 API_BASE_URL = "http://localhost:8003/api/messages/messages"
 GROUP_API_URL = "http://127.0.0.1:8003/api/groups/{chat_id}/"
